@@ -1,20 +1,19 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 public class bj1260 {
     static int N;
     static int M;
     static int V;
-    static boolean arr[][];
-    static boolean dfsvisit[][];
-    static boolean bfsvisit[][];
-    static int nowX;
-    static int nowY;
-    static int directionX[] = {0, 0, -1, 1};
-    static int directionY[] = {-1, 1, 0, 0};
-    static int dfsresult[];
-    static int bfsresult[];
+    static ArrayList<LinkedList<Integer>> graph = new ArrayList<>();
+    static boolean dfsvisit[];
+    static boolean bfsvisit[];
+    static ArrayList<Integer> dfsresult;
+    static ArrayList<Integer> bfsresult;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -23,46 +22,59 @@ public class bj1260 {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         V = Integer.parseInt(st.nextToken());
+        dfsvisit = new boolean[N+1];
+        bfsvisit = new boolean[N+1];
 
-        arr = new boolean[N][M];
-        dfsvisit = new boolean[N][M];
-        bfsvisit = new boolean[N][M];
+        for(int i=0 ; i <= N; i++) {
+            LinkedList<Integer> list = new LinkedList<>();
+            graph.add(list);
+        }
 
         for(int i=0; i < M; i++) {
-            int v1 = Integer.parseInt(st.nextToken());
-            int v2 = Integer.parseInt(st.nextToken());
-            arr[v1][v2] = true;
-            arr[v2][v1] = true;
+            StringTokenizer temp = new StringTokenizer(br.readLine());
+            int v1 = Integer.parseInt(temp.nextToken());
+            int v2 = Integer.parseInt(temp.nextToken());
+            graph.get(v1).add(v2);
+            graph.get(v2).add(v1);
         }
 
-        dfsresult = new int[N];
-        bfsresult = new int[N];
 
+        dfsresult = new ArrayList<>();
+        bfsresult = new ArrayList<>();
+        DFS(V);
+        bfsresult.add(V);
+        BFS(V);
 
+        for(Integer i : dfsresult) System.out.print(i);
+        System.out.println();
+        for(Integer i : bfsresult) System.out.print(i);
     }
 
-    private static void DFS(int x, int y, int V, int[] result) {
-        dfsvisit[x][y] = true;
+    private static void DFS(int node) {
+        dfsvisit[node] = true;
+        // 방문 노드 저장
+        dfsresult.add(V);
 
-        while(dfsresult[N-1]<1) {
-            nowX = arr[x][y];
-            nowY = arr[];
-
-            if(range_check() && !dfsvisit[nowX][nowY] && arr[nowX][nowY] == true) {
-                DFS(nowX, nowY, V, result);
+        // 인접 노드 탐색
+        for (int i : graph.get(node)){
+            if (dfsvisit[i]==false){
+                DFS(i);
             }
         }
-    } // End of DFS
+    }
 
-    private static boolean range_check() {
-        return nowX >= 0 && nowX < N && nowY >= 0 && nowY < M;
-    } // End of range_check
-
-    private static void BFS(int x, int y, int V, int[] result){
-        bfsvisit[x][y] = true;
-
-        for(){
-
+    private static void BFS(int node){
+        bfsvisit[node] = true;
+        // 인접 노드 탐색
+        for (int i : graph.get(node)){
+            bfsvisit[i] = true;
+            // 방문 노드 저장
+            bfsresult.add(i);
+        }
+        for(int i : graph.get(node)){
+            if(bfsvisit[i]==false){
+                BFS(i);
+            }
         }
     }
 }
