@@ -1,15 +1,13 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class bj1260 {
     static int N;
     static int M;
     static int V;
-    static ArrayList<LinkedList<Integer>> graph = new ArrayList<>();
+    static ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
     static boolean dfsvisit[];
     static boolean bfsvisit[];
     static ArrayList<Integer> dfsresult;
@@ -26,7 +24,7 @@ public class bj1260 {
         bfsvisit = new boolean[N+1];
 
         for(int i=0 ; i <= N; i++) {
-            LinkedList<Integer> list = new LinkedList<>();
+            ArrayList<Integer> list = new ArrayList<>();
             graph.add(list);
         }
 
@@ -38,25 +36,28 @@ public class bj1260 {
             graph.get(v2).add(v1);
         }
 
+        for(int i=0; i <= N; i++){
+            Collections.sort(graph.get(i));
+        }
+
 
         dfsresult = new ArrayList<>();
         bfsresult = new ArrayList<>();
         DFS(V);
-        bfsresult.add(V);
         BFS(V);
 
-        for(Integer i : dfsresult) System.out.print(i);
+        for(Integer i : dfsresult) System.out.print(i+" ");
         System.out.println();
-        for(Integer i : bfsresult) System.out.print(i);
+        for(Integer i : bfsresult) System.out.print(i+" ");
     }
 
     private static void DFS(int node) {
         dfsvisit[node] = true;
         // 방문 노드 저장
-        dfsresult.add(V);
+        dfsresult.add(node);
 
         // 인접 노드 탐색
-        for (int i : graph.get(node)){
+        for (Integer i : graph.get(node)){
             if (dfsvisit[i]==false){
                 DFS(i);
             }
@@ -64,17 +65,22 @@ public class bj1260 {
     }
 
     private static void BFS(int node){
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(node);
         bfsvisit[node] = true;
-        // 인접 노드 탐색
-        for (int i : graph.get(node)){
-            bfsvisit[i] = true;
-            // 방문 노드 저장
-            bfsresult.add(i);
-        }
-        for(int i : graph.get(node)){
-            if(bfsvisit[i]==false){
-                BFS(i);
+
+        while(!q.isEmpty()){
+            int value = q.poll();
+            bfsresult.add(value);
+
+            for(int e : graph.get(value)){
+                if(!bfsvisit[e]){
+                    bfsvisit[e] = true;
+                    q.offer(e);
+                }
             }
         }
+
     }
+
 }
