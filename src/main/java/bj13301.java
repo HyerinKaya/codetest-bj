@@ -25,4 +25,3 @@ public class bj13301 {
         System.out.println(length);
     }
 }
-ㅎ
