@@ -54,11 +54,12 @@ public class inputCode {
     //여러줄 하나씩 숫자 받기
     public static void input3() throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        StringTokenizer stnext = new StringTokenizer(br.readLine());
-        int m = Integer.parseInt(stnext.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+        int[] arr = new int[K];
+
+        for (int i = 0; i < K; i++) {
+            arr[i] = Integer.parseInt(br.readLine());
+        }
     }
 }
