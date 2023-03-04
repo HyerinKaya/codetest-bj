@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -62,4 +63,25 @@ public class inputCode {
             arr[i] = Integer.parseInt(br.readLine());
         }
     }
+
+    //한 줄 한 글자씩 받기, ArrayList<ArrayList<Integer>>
+    public static void input4() throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+
+        ArrayList<ArrayList<Integer>> map = new ArrayList<ArrayList<Integer>>();
+
+        for(int i=0; i<N; i++){
+            map.add(new ArrayList<Integer>());
+            char[] arr = br.readLine().toCharArray();
+            for(int j=0; j<N;j++){
+                String C = String.valueOf(arr[j]);
+                if(C.equals("Y")){
+                    map.get(i).add(j);
+                }
+            }
+        }
+    }
+
 }
