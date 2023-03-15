@@ -1,23 +1,33 @@
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class bj1500 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int S = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
+        long answer = 1;
 
-        Scanner sc = new Scanner(System.in);
-        int S = sc.nextInt(); // 정수 S
-        int K = sc.nextInt(); // 합이 S인 K개의 정수
-        int div = S / K;
-        int mod = S % K;
-        long max = 1;
-        for (int i=1; i<=K; i++) {
-            if(i<=mod) { // 나머지 갯수만큼 +1
-                max *= (div+1);
-            }else {
-                max *= div;
+        int[] arr = new int[K];
+        int base = S/K;
+        int remain = S%K;
+
+        for (int i = 0; i < K; i++) {
+            arr[i] = base;
+            if(remain>0) {
+                arr[i]+=1;
+                remain-=1;
             }
-
         }
-        System.out.println(max);
+
+        for(int i=0;i<K;i++){
+            answer *= arr[i];
+        }
+        System.out.println(answer);
+
     }
 }
