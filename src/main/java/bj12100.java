@@ -21,7 +21,7 @@ public class bj12100 {
             }
         }
 
-        game(arr, 1);
+        game(arr, 0);
         System.out.println(answer);
     }
 
@@ -43,11 +43,18 @@ public class bj12100 {
             findMax(map);
             return;
         }
+
+        int copy[][] = new int[N][N];
+        for(int i = 0; i < N; i++)
+            copy[i] = map[i].clone();
+
         for(int i=1; i<5;i++){
-            int[][] newMap = map.clone();
-            newMap = move(newMap,i);
+            int[][] newMap = move(map,i);
             game(newMap, count+1);
+            for(int a = 0; a < N; a++)
+                map[a] = copy[a].clone();
         }
+
     }
 
     public static int[][] move(int[][] map, int direction){
