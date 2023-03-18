@@ -45,13 +45,14 @@ public class bj12100 {
         }
 
         int copy[][] = new int[N][N];
+        copy = map.clone();
         for(int i = 0; i < N; i++)
             copy[i] = map[i].clone();
 
         for(int i=1; i<5;i++){
             int[][] newMap = move(map,i);
             game(newMap, count+1);
-            for(int a = 0; a < N; a++)
+           for(int a = 0; a < N; a++)
                 map[a] = copy[a].clone();
         }
 
