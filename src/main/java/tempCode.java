@@ -1,219 +1,80 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.util.*;
 
-/*
-if(history.equals("3")){
-            System.out.println("history: "+history);
-            for(int i=0; i<N;i++){
-                for(int j=0; j<N;j++){
-                    System.out.print(map[i][j]);
-                }
-                System.out.println();
-            }
-        }
- */
+public class tempCode{
 
-public class tempCode {
+    static int[][] route;
+    static int answer =0;
     static int N;
-    static int answer;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        int[][] arr = new int[N][N];
+        route = new int[N][2];
 
-        for(int i=0; i<N;i++){
+        for(int i=0;i<N;i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for(int j=0; j<N;j++){
-                arr[i][j] = Integer.parseInt(st.nextToken());
-            }
+            route[i][0] = Integer.parseInt(st.nextToken());
+            route[i][1] = Integer.parseInt(st.nextToken());
         }
 
-        int[][] copy = new int[N][N];
-        copy = arr.clone();
-        for(int p=0; p<N;p++){
-            for(int q=0; q<N;q++){
-                System.out.print(copy[p][q]);
-            }
-            System.out.println();
-        }
-
-        for(int i = 0; i < N; i++)
-            copy[i] = arr[i].clone();
-
-        for(int p=0; p<N;p++){
-            for(int q=0; q<N;q++){
-                System.out.print(copy[p][q]);
-            }
-            System.out.println();
-        }
-        //game(arr, 1, "");
+        System.out.println(solution(route));
     }
 
-    public static void findMax(int[][] map){
-        int max=0;
-        for(int i=0; i<N; i++){
-            for(int j=0; j<N;j++){
-                if(map[i][j]>max) max = map[i][j];
-            }
+    static int solution(int[][] routes) {
+        N = routes.length;
+        route = new int[N][2];
+        for(int i=0; i<N;i++){
+            route[i] = routes[i].clone();
         }
-        if(max>answer){
-            answer=max;
-        }
-        return;
+        setCamera();
+
+        return answer;
     }
 
-    public static void game(int[][] map, int count, String history){
-        if(count==0){
-            findMax(map);
-            return;
-        }
-        for(int i=1; i<5;i++){
-            int[][] nextMap = move(map, i);
-            System.out.println("i:"+i);
-            for(int p=0; p<N;p++){
-                for(int q=0; q<N;q++){
-                    System.out.print(nextMap[p][q]);
-                }
-                System.out.println();
-            }
+    static class Pair implements Comparable<Pair>{
+        int start;
+        int end;
 
-            StringBuilder sb = new StringBuilder(history);
-            sb.append(String.valueOf(i));
-            String newHistory = sb.toString();
-            game(nextMap, count-1, newHistory);
+        Pair(int s, int e){
+            this.start = s;
+            this.end = e;
+        }
+
+        //start가 작으면 앞으로, 같으면 end가 작은게 앞으로
+        public int compareTo(Pair o){
+            if (this.start>o.start){
+                return 1;
+            } else if(this.start==o.start){
+                return this.end - o.end;
+            } else{
+                return -1;
+            }
         }
     }
 
-    public static int[][] move(int[][] map, int direction){
-        int[][] fakeMap = new int[N][N];
-        //direction: 1>, 2<, 3v, 4^
-        switch (direction){
-            case 1 -> {
-                for (int i = 0; i < N; i++) {
-                    Stack<Integer> stack = new Stack<>();
-                    boolean flag = false;
-                    for (int j = 0; j < N; j++) {
-                        stack.push(map[i][j]);
-                    }
-                    int count = N - 1;
-                    while (!stack.isEmpty()) {
-                        int num = stack.peek();
-                        if (num == 0) {
-                            stack.pop();
-                        } else if (count == N - 1) {
-                            map[i][count] = stack.pop();
-                            count--;
-                        } else if (num == map[i][count + 1] && flag == false) {
-                            map[i][count + 1] = stack.pop() * 2;
-                            flag = true;
-                        } else {
-                            map[i][count] = stack.pop();
-                            count--;
-                            flag = false;
-                        }
-                    }
-                    for (int j = 0; j <= count; j++) {
-                        map[i][j] = 0;
-                    }
-                }
-                break;
-            }
-            case 2 -> {
-                for (int i = 0; i < N; i++) {
-                    Stack<Integer> stack = new Stack<>();
-                    boolean flag = false;
-                    for (int j = N - 1; j >= 0; j--) {
-                        stack.push(map[i][j]);
-                    }
-                    int count = 0;
-                    while (!stack.isEmpty()) {
-                        int num = stack.peek();
-                        if (num == 0) {
-                            stack.pop();
-                        } else if (count == 0) {
-                            map[i][count] = stack.pop();
-                            count++;
-                        } else if (num == map[i][count - 1] && flag == false) {
-                            map[i][count - 1] = stack.pop() * 2;
-                            flag = true;
-                        } else {
-                            map[i][count] = stack.pop();
-                            count++;
-                            flag = false;
-                        }
-                    }
-                    for (int j = N - 1; j >= count; j--) {
-                        map[i][j] = 0;
-                    }
-                }
-                break;
-            }
-            case 3 -> {
-                for (int i = 0; i < N; i++) {
-                    Stack<Integer> stack = new Stack<>();
-                    boolean flag = false;
-                    for (int j = 0; j < N; j++) {
-                        stack.push(map[j][i]);
-                    }
-                    int count = N - 1;
-                    while (!stack.isEmpty()) {
-                        int num = stack.peek();
-                        if (num == 0) {
-                            stack.pop();
-                        } else if (count == N - 1) {
-                            map[count][i] = stack.pop();
-                            count--;
-                        } else if (num == map[count + 1][i] && flag == false) {
-                            map[count + 1][i] = stack.pop() * 2;
-                            flag = true;
-                        } else {
-                            map[count][i] = stack.pop();
-                            count--;
-                            flag = false;
-                        }
-
-                    }
-                    for (int j = 0; j <= count; j++) {
-                        map[j][i] = 0;
-                    }
-                }
-                break;
-            }
-            case 4 -> {
-                for (int i = 0; i < N; i++) {
-                    Stack<Integer> stack = new Stack<>();
-                    boolean flag = false;
-                    for (int j = N - 1; j >= 0; j--) {
-                        stack.push(map[j][i]);
-                    }
-                    int count = 0;
-                    while (!stack.isEmpty()) {
-                        int num = stack.peek();
-                        if (num == 0) {
-                            stack.pop();
-                        } else if (count == 0) {
-                            map[count][i] = stack.pop();
-                            count++;
-                        } else if (num == map[count - 1][i] && flag == false) {
-                            map[count - 1][i] = stack.pop() * 2;
-                            flag = true;
-                        } else {
-                            map[count][i] = stack.pop();
-                            count++;
-                            flag = false;
-                        }
-                    }
-                    for (int j = N - 1; j >= count; j--) {
-                        map[j][i] = 0;
-                    }
-                }
-                break;
-            }
-            default -> {return fakeMap;}
+    static void setCamera(){
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        int start =0;
+        int end =0;
+        for(int i=0; i<N;i++){
+            start = route[i][0];
+            end = route[i][1];
+            pq.add(new Pair(start, end));
         }
-        return map;
+
+        int location = -30000;
+        while(!pq.isEmpty()){
+            //카메라 위치가 Pair의 start보다 작으면 end로 갱신
+            Pair p = pq.poll();
+            if(location<p.start){
+                location = p.end;
+                answer+=1;
+            }
+        }
     }
 }
+
+
