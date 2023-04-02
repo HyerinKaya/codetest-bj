@@ -36,6 +36,7 @@ public class p195divide_conquer {
                 hi+=1;
                 height = Math.min(height, h[hi]);
             }else{
+                //왼쪽 확장
                 lo-=1;
                 height=Math.min(height, h[lo]);
             }
