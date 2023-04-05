@@ -33,7 +33,7 @@ public class bj20055 {
 
         check();
 
-        while(true){
+
 
             turn();
             botMove();
@@ -41,10 +41,9 @@ public class bj20055 {
             level+=1;
             check();
 
-        }
-
-
     }
+
+
 
     static void botUp(){ //벨트에 로봇을 올림
         if(belt[0]>0){
