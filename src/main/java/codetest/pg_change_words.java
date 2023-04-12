@@ -65,5 +65,5 @@ public class pg_change_words {
             }
             return(count==N-1);
         }
-    }
 }
+
