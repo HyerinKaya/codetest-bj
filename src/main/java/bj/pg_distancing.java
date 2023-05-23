@@ -8,7 +8,6 @@ class pg_distancing {
     static int[] dr = {0, 0, 1, -1};
     static int[] dc = {1, -1, 0, 0};
 
-    TreeMap
 
 
     public int[] solution(String[][] places) {
