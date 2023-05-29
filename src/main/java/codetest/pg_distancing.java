@@ -1,4 +1,4 @@
-package bj;
+package codetest;
 import java.util.*;
 
 class pg_distancing {
