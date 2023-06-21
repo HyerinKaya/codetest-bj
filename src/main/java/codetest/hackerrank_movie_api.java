@@ -15,8 +15,8 @@ import static java.util.stream.Collectors.toList;
 
 
 import java.net.*;
-import org.json.*;
-import com.google.gson.*;
+//import org.json.*;
+//import com.google.gson.*;
 
 class Result {
 
@@ -52,8 +52,8 @@ class Result {
             in.close();
 
             String r = response.toString();
-            JsonObject jsonObj = new Gson.fromJson(r, JsonObject.class);
-            JsonArray jsonArr = jsonObj.getJsonArray("data");
+//            JsonObject jsonObj = new Gson.fromJson(r, JsonObject.class);
+//            JsonArray jsonArr = jsonObj.getJsonArray("data");
 
             // for(int i=0;i<jsonArr.length;i++){
             //     JSONObject item = jsonArr.getJSONObject(i);
@@ -64,22 +64,22 @@ class Result {
 
             // System.out.println(response.toString());
 
-            JsonObject best = new JsonObject();
-            for(int i=0;i<jsonArr.size();i++){
-                JsonObject item = jsonArr.getJsonObject(i);
-                String name = item.getString("name");
-                int rate = item.getString("imdb_rating");
-                if(item.getString("genre").equals(genre)){
-                    if(rate>best.getString("imdb_rating")){
-                        best = item;
-                    }else if(rate == best.getString("imdb_rating")&&name<best.getString("name")){
-                        best = item;
-                    }
-                }
-            }
-
-            String result = best.getString("name");
-            return result;
+//            JsonObject best = new JsonObject();
+//            for(int i=0;i<jsonArr.size();i++){
+//                JsonObject item = jsonArr.getJsonObject(i);
+//                String name = item.getString("name");
+//                int rate = item.getString("imdb_rating");
+//                if(item.getString("genre").equals(genre)){
+//                    if(rate>best.getString("imdb_rating")){
+//                        best = item;
+//                    }else if(rate == best.getString("imdb_rating")&&name<best.getString("name")){
+//                        best = item;
+//                    }
+//                }
+//            }
+//
+//            String result = best.getString("name");
+//            return result;
         }catch(IOException e){
             e.printStackTrace();
         }
